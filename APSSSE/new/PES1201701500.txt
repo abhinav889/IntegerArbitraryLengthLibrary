@@ -1,0 +1,115 @@
+Project Title : C library for the integers of arbitrary length (intal)
+
+1. Introduction :
+An intal is a nonnegative integer of arbitrary length upto 1000 digits which is represented in the form of strings(in big-endian) 
+followed by a null character.
+Used to perform operations on numbers that are not directly possible in C to be performed.
+
+
+
+2. Approach:
+
+	1)intal_add:
+		The strings are iterated from index strlen(string) - 1 and are added to the resultant string(having length of the larger string)
+		keeping hold of the carry until the smaller numbr string is completely traversed.
+		If carry exists, it is added at the next digit addition.
+		if there is a carry at the end of the addition.A new string is used which is of length one higher than the result
+		and copied.The older result is freed.
+
+	2)intal_compare:
+		First the length of the two intals are compared.
+		The intal which contains the highest length is the greater amoung the two.
+		If the length is same, then till the individual digits are different, the index is checked.
+		If the last index also has the same digits, then 0 is returned.
+
+	3)intal_diff:
+		intal_compare is called to check which number is higher and then accordingly subtract the lower number from the higher number.
+		Then if the length of the numbers are same a new string value of "0" is returned.
+		If the length is not equal digit by digit subtraction is performed with borrow if any subtracted until the smaller number string is traversed
+		and then along with borrow,the rest of the numbers of longer string are copied into the resultant string.
+		Leading zeroes if any are checked,if present new string is allocated and is copied result string values from non-zero character and old result
+		is freed.
+				
+	4)intal_multiply:
+		An integer array is used to store the result of the multiplication of character by character school way of multiplication.
+		The two strings are traversed in two for loops in such a way that,after every loop,the binary multiplication result is added from a position 
+		one higher to the left.
+		The final resultant array is copied to a string and then returned after checking for any leading zeroes and skipping them.
+				
+	5)intal_mod:
+		To implement mod function in O(log(intal1)) time, the following operations are done.
+			1)Intal1 and Intal2 are compared, and the following operations are done only if Intal1 is greater than or equal to Intal2.
+			2)A temporary intal is assigned value of Intal2, and it is doubled, till it is greater than or equal to Intal1.
+			3)Intal1 is assigned the difference of temp and Intal1.
+			4)These steps were recursively performed to obtain the final value
+				
+	6)intal_pow:
+		Base cases like n = 0 and n = 1 are handled
+		Divide and conquer iterative method is used to compute power.
+		n value is divided by 2 everytime in the loop. 
+		base value is squared every time in the loop.
+		If n is odd, the result value is multiplied with base value.
+		if n becomes less than equal to zero,the result is returned
+				
+	7)intal_gcd:
+		Euclid's algorithm is used.
+		Till either of the values are zero, (intal2,intal_mod(intal1,intal2)) is called.
+				
+	8)intal_fibonacci:
+		Fibonacci value of 0 and 1 is initialized.
+		loop i from 2 to n,and find the fib(i) from previous two values stored as variables.
+		The two variables are updated with resultant and previous one value for the next calculation.
+
+	9)intal_factorial:
+		intal_multiply is called continuosly, with the initial value being "1".
+		The product is stored and is further multiplied with values upto n and returned.
+
+	10)intal_bincoeff:
+		from the rule that C(n,k)=C(n,n-k). minimum of k and n-k is taken.
+		A DP table of size k is used. The (i+1)th row of numbers are assigned the values in such a way that (j)th index is 
+		calculated as the sum of (j)th and (j-1)th indices of (i)th row.
+		The indices of j range from min(i,k) down to 1.
+
+	11)intal_max:
+		maximum is initialized as the first element of the array, and the index is set as 0.
+		Till the end of the array, each element is compared with the maximum. If the element is greater than the maximum element at the index,
+		the index is updated as the element's position.The index value is returned.				
+
+	12)intal_min:
+		minimum is initialized as the first element of the array, and the index is set as 0.
+		Till the end of the array, each element is compared with the minimum. If the element is lesser than the minimum element at the index,
+		the index is updated as the element's position.The index value is returned.
+		
+	13)intal_search:
+		sequential search is done. 
+		Every element is compared with the key and if the element is the key being searched, that index of the element is returned.
+				
+	14)intal_binsearch:
+		Iterative binary search is implemented.
+		mid is assigned as the midpoint of the leftmost and rightmost index.
+		intal_compare is used to compare the intals.
+		If intal_compare returns 0 we store the index in a variable and continue checking with right index one less than matching position.
+		Else, depending on whether the value at mid is lesser than or greater than the value of the key, 
+		left index is set to mid + 1 or right index is set to mid -1 respectively.
+		If left index exceeds right index, then -1 is returned as the key is not found.
+
+	15)intal_sort:
+		Bottom up Heap sort is used as it has better space complexity than merge sort and O(nlogn) time complexity.
+		For each of the elements, from n to 1, the root is moved to the end, and a heapify function which uses intal_compare to compare the intals is called.
+		Heapify function converts the array to a max heap.
+		Each time the converted max heap root values is stored and n is resuced by 1.
+
+	16)coin_row_problem:
+		3 variables including result are used to store previous values.
+		Initially , variable1 is made 0, variable2 is initialized to the first element of the array.
+		From there till the end of the array, result is assigned as the maximum of the variable2 and the sum of variable1 and the element at index i.
+		variable2 is made equal to result and variable1 is made equal to variable2.
+		Result is returned at the end.
+			
+				
+3. Other functions that can be implemented:
+	1)Division of Intals can be implemented with the help of repeated subtraction.
+
+	2)returning binary format of an intal result.
+
+	3)AND,OR,XOR operations on Intal numbers
